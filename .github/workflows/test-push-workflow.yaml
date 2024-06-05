@@ -60,7 +60,7 @@ jobs:
         - name: Update YAML Configurations for Backend Deployment
           run: |
             git config user.email ${{vars.GIT_EMAIL}}
-            git config user.name ${{vars.GIT_USER}}
+            git config user.name ${{vars.GIT_USERNAME}}
             git checkout -b version-change
             cd backend                    
             yq e -i '.spec.template.spec.containers[0].image="${{vars.DOCKER_USERNAME}}/infrabackend:${{ github.sha }}"' deployment.yaml

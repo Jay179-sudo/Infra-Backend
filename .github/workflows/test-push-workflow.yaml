@@ -1,0 +1,66 @@
+name: test-push-docker
+on:
+    push:
+        branches:
+            - main
+jobs:
+    test-app:
+        name: Test Application
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+        runs-on: ${{matrix.os}}
+        steps:
+            - name: Setup Go Environment
+              uses: actions/setup-go@v5.0.1
+
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+            
+            - name: Run Unit and Integration Testing
+              run: go test ./...
+            
+            - name: Run Code Coverage Analysis
+              run: go test -cover ./...
+              if: always()
+              continue-on-error: true
+    push:
+        needs: [test-app]
+        name: Push to DockerHub
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+            
+            - name: Dockerhub Login
+              uses: docker/login-action@v3
+              with:
+                username: ${{vars.DOCKER_USERNAME}}
+                password: ${{secrets.DOCKERHUB_TOKEN}}
+        
+            - name: Build and push
+              uses: docker/build-push-action@v5
+              with:
+                push: true
+                tags: ${{vars.DOCKER_USERNAME}}/infrabackend:${{ github.sha }}
+    # pr-job:
+    #   needs: [push]
+    #   name: Create PR to Infrastructure Repo
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - name: Checkout Repo
+    #       uses: actions/checkout@v4
+    #       with:
+    #         repository: https://github.com/Jay179-sudo/Infra-Manifests
+    #     - name: Install yq to parse YAML
+    #       uses: mikefarah/yq@master
+    #     - name: Update YAML Configurations for Backend Deployment
+    #       run: |
+    #         cd backend                    
+    #         yq e -i '.spec.template.spec.containers[0].image="${{vars.DOCKER_USERNAME}}/infrabackend:${{ github.sha }}"' backend-deployment.yml
+    #         cat backend-deployment.yml
+
+
+

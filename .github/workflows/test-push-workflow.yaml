@@ -53,7 +53,7 @@ jobs:
         - name: Checkout Repo
           uses: actions/checkout@v4
           with:
-            repository: https://github.com/Jay179-sudo/Infra-Manifests
+            repository: Jay179-sudo/Infra-Manifests
         - name: Install yq to parse YAML
           uses: mikefarah/yq@master
         - name: Update YAML Configurations for Backend Deployment

@@ -59,8 +59,8 @@ jobs:
         - name: Update YAML Configurations for Backend Deployment
           run: |
             cd backend                    
-            yq e -i '.spec.template.spec.containers[0].image="${{vars.DOCKER_USERNAME}}/infrabackend:${{ github.sha }}"' deployment.yml
-            cat deployment.yml
+            yq e -i '.spec.template.spec.containers[0].image="${{vars.DOCKER_USERNAME}}/infrabackend:${{ github.sha }}"' deployment.yaml
+            cat deployment.yaml
 
 
 

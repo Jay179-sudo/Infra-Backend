@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const MaxAllotedTime int = 10
+
 type config struct {
 	port int    // :4000
 	env  string // (Development|Staging|Production)
@@ -23,6 +25,8 @@ func main() {
 	var cfg config
 	environment := os.Getenv("ENVIRONMENT")
 	portAddress := os.Getenv("PORT")
+
+	// setting the default values
 	cfg.env = "Development"
 	cfg.port = 4000
 
@@ -36,10 +40,27 @@ func main() {
 		cfg.port = port
 	}
 
+	// client, err := connectDB(cfg.db.connString)
+	// if err != nil {
+	// 	log.Fatalf(err.Error())
+	// }
+
+	// defer func() {
+	// 	if err := client.Disconnect(context.TODO()); err != nil {
+	// 		log.Fatalf("Could not disconnect from DB")
+	// 	}
+	// }()
 	var app application
+
 	app.config = cfg
 	app.logger = logger
+	// app.mongo = client
 
+	// setup MongoDB Index to Email Field
+	// err = app.createIndex()
+	// if err != nil {
+	// 	log.Fatal(err.Error())
+	// }
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%v", app.config.port),
 		Handler:      app.routes(),

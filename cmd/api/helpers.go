@@ -30,3 +30,32 @@ func (app *application) WriteJson(w http.ResponseWriter, status int, data envelo
 
 	return nil
 }
+
+func (app *application) readJson(r *http.Request, input interface{}) error {
+	err := json.NewDecoder(r.Body).Decode(&input)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// func connectDB(connectionString string) (*mongo.Client, error) {
+// 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(connectionString))
+// 	if err != nil {
+// 		log.Fatalf(err.Error())
+// 	}
+// 	return client, err
+// }
+
+// func (app *application) createIndex() error {
+// 	indexModel := mongo.IndexModel{
+// 		Keys:    bson.D{{"Email", 1}},
+// 		Options: options.Index().SetUnique(true),
+// 	}
+// 	coll := app.mongo.Database("User-Requests").Collection("VM")
+// 	_, err := coll.Indexes().CreateOne(context.TODO(), indexModel)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }

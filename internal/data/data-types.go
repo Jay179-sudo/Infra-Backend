@@ -6,7 +6,6 @@ import (
 
 type Specification struct {
 	RAM       int32  `json:"RAM"`
-	Storage   int32  `json:"Storage"`
 	CPU       int32  `json:"CPU"`
 	PublicKey string `json:"PublicKey"`
 }

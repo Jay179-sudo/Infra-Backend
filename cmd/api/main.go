@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const MaxAllotedTime int = 10
+
 type config struct {
 	port int    // :4000
 	env  string // (Development|Staging|Production)
@@ -23,6 +25,8 @@ func main() {
 	var cfg config
 	environment := os.Getenv("ENVIRONMENT")
 	portAddress := os.Getenv("PORT")
+
+	// setting the default values
 	cfg.env = "Development"
 	cfg.port = 4000
 
@@ -37,9 +41,9 @@ func main() {
 	}
 
 	var app application
+
 	app.config = cfg
 	app.logger = logger
-
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%v", app.config.port),
 		Handler:      app.routes(),

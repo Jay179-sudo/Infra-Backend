@@ -6,12 +6,13 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (app *application) routes() *httprouter.Router {
+func (app *application) routes() http.Handler {
 	router := httprouter.New()
 
 	router.NotFound = http.HandlerFunc(app.notFoundResponse)
 	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowedResponse)
 
-	router.HandlerFunc(http.MethodGet, "/healthcheck", app.HealthCheckHandler)
-	return router
+	router.HandlerFunc(http.MethodGet, "/healthcheck", app.healthCheckHandler)
+	router.HandlerFunc(http.MethodPost, "/request", app.requestVM)
+	return app.enableCORS(router)
 }

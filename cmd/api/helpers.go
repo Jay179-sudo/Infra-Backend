@@ -30,3 +30,11 @@ func (app *application) WriteJson(w http.ResponseWriter, status int, data envelo
 
 	return nil
 }
+
+func (app *application) readJson(r *http.Request, input interface{}) error {
+	err := json.NewDecoder(r.Body).Decode(&input)
+	if err != nil {
+		return err
+	}
+	return nil
+}

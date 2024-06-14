@@ -18,7 +18,7 @@ func TestHealthCheckHandler(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 	app := &application{}
-	app.HealthCheckHandler(rr, request)
+	app.healthCheckHandler(rr, request)
 	rs := rr.Result()
 	if rs.StatusCode != http.StatusOK {
 		t.Errorf(cmp.Diff(rs.StatusCode, http.StatusOK))

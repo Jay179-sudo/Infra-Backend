@@ -6,8 +6,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"strconv"
-	"time"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -49,16 +47,10 @@ func (app *application) requestVM(w http.ResponseWriter, r *http.Request) {
 		}
 		reducedEmail += string(element)
 	}
-	secondsLeft := time.Until(VMRequest.Spec.ExpiryTime).Seconds()
-	if secondsLeft > float64(MaxAllotedTime) || secondsLeft < 0 {
-		secondsLeft = float64(MaxAllotedTime)
-	}
-	allotedSeconds := strconv.Itoa(int(secondsLeft))
-	log.Println(allotedSeconds)
 	userRequestSpec := data.UserRequestSpec{
 		Email:     VMRequest.Email,
 		RAM:       VMRequest.Spec.RAM,
-		CPU:       2,
+		CPU:       VMRequest.Spec.CPU,
 		PublicKey: VMRequest.Spec.PublicKey,
 	}
 	userRequest := data.UserRequest{

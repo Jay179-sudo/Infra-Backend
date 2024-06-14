@@ -1,16 +1,14 @@
 package data
 
 import (
-	"time"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type Specification struct {
-	RAM        int32     `json:"RAM"`
-	Storage    int32     `json:"Storage"`
-	ExpiryTime time.Time `json:"ExpiryTime"`
-	PublicKey  string    `json:"PublicKey"`
+	RAM       int32  `json:"RAM"`
+	Storage   int32  `json:"Storage"`
+	CPU       int32  `json:"CPU"`
+	PublicKey string `json:"PublicKey"`
 }
 type VMRequest struct {
 	Email string        `json:"Email"`

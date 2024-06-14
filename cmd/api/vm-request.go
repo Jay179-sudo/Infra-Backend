@@ -15,9 +15,7 @@ import (
 )
 
 func (app *application) requestVM(w http.ResponseWriter, r *http.Request) {
-	// Set for Testing, change during production
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	// extract data from JSON
 	VMRequest := data.VMRequest{}
 	err := json.NewDecoder(r.Body).Decode(&VMRequest)
@@ -25,24 +23,21 @@ func (app *application) requestVM(w http.ResponseWriter, r *http.Request) {
 		app.errorResponse(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	// validate email using regex
-
 	// Object will enclose and its name/label will be the email provided - (RAM|STORAGE|SERVICE)
 	// 1. RAM ------> 	Request + Limit
 	// 2. Storage --> 	PV, PVC, Storage Class
 	// 3. Service --> 	NodePort
 
-	// send request to the kubernetes API
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		log.Printf("Could not authenticate with the API. Error: %v", err.Error())
-		http.Error(w, "first The server encountered an error while processing your data", http.StatusInternalServerError)
+		http.Error(w, "The server encountered an error while processing your data", http.StatusInternalServerError)
 		return
 	}
 	client, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		log.Printf("Could not instantiate clientset. Error: %v", err.Error())
-		http.Error(w, "second-lastThe server encountered an error while processing your data", http.StatusInternalServerError)
+		http.Error(w, "The server encountered an error while processing your data", http.StatusInternalServerError)
 		return
 	}
 	reducedEmail := ""
@@ -83,7 +78,6 @@ func (app *application) requestVM(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Could not create the resource %v:", err.Error())
 		return
 	}
-	// Create UserRequest Resource
 	response := client.RESTClient().
 		Post().
 		AbsPath("apis/request.jaypd.github.com/v1/namespaces/default/userrequests").

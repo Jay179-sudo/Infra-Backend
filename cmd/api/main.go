@@ -40,27 +40,10 @@ func main() {
 		cfg.port = port
 	}
 
-	// client, err := connectDB(cfg.db.connString)
-	// if err != nil {
-	// 	log.Fatalf(err.Error())
-	// }
-
-	// defer func() {
-	// 	if err := client.Disconnect(context.TODO()); err != nil {
-	// 		log.Fatalf("Could not disconnect from DB")
-	// 	}
-	// }()
 	var app application
 
 	app.config = cfg
 	app.logger = logger
-	// app.mongo = client
-
-	// setup MongoDB Index to Email Field
-	// err = app.createIndex()
-	// if err != nil {
-	// 	log.Fatal(err.Error())
-	// }
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%v", app.config.port),
 		Handler:      app.routes(),

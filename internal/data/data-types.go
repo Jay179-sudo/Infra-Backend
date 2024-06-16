@@ -37,3 +37,8 @@ type UserRequest struct {
 	Spec   UserRequestSpec   `json:"spec,omitempty"`
 	Status UserRequestStatus `json:"status,omitempty"`
 }
+
+// Delete Request
+type DeleteRequest struct {
+	Email string `json:"Email"`
+}

@@ -12,7 +12,8 @@ func (app *application) routes() http.Handler {
 	router.NotFound = http.HandlerFunc(app.notFoundResponse)
 	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowedResponse)
 
-	router.HandlerFunc(http.MethodGet, "/healthcheck", app.healthCheckHandler)
-	router.HandlerFunc(http.MethodPost, "/request", app.requestVM)
+	router.HandlerFunc(http.MethodGet, "/api/healthcheck", app.healthCheckHandler)
+	router.HandlerFunc(http.MethodPost, "/api/request", app.requestVM)
+	router.HandlerFunc(http.MethodPost, "/api/delete", app.deleteVM)
 	return app.enableCORS(router)
 }

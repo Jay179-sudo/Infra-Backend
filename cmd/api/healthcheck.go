@@ -1,11 +1,13 @@
 package main
 
-import "net/http"
+import (
+	"log"
+	"net/http"
+)
 
 func (app *application) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	// Set for Testing, change during production
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	log.Printf("Healthcheck Handler triggered")
 	content := map[string]string{
 		"status":      "Available",
 		"environment": app.config.env,
